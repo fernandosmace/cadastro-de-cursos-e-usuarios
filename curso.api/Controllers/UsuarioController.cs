@@ -3,10 +3,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using curso.api.Business.Entities;
 using curso.api.Filters;
+using curso.api.Infrastructure.Data;
 using curso.api.Models;
 using curso.api.Models.Usuarios;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -63,11 +66,37 @@ namespace curso.api.Controllers
       });
     }
 
+    //   <sumary>
+    //   Este serviço permite cadastrar um novo usuário.
+    //   </sumary>
+    //   <param name="loginViewModelInput">View Model de cadastro</param>
+    [SwaggerResponse(statusCode: 200, description: "Sucesso ao cadastrar novo usuário", Type = typeof(LoginViewModelInput))]
+    [SwaggerResponse(statusCode: 400, description: "Campos obrigatórios", Type = typeof(ValidaCampoViewModelOutput))]
+    [SwaggerResponse(statusCode: 500, description: "Erro interno", Type = typeof(ErroGenericoViewModel))]
     [HttpPost]
     [Route("registrar")]
     [ValidacaoModelStateCustomizado]
     public IActionResult Registrar(RegistroViewModelInput loginViewModelInput)
     {
+      var optionsBuilder = new DbContextOptionsBuilder<CursoDbContext>();
+      optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=CURSO;Trusted_Connection=True;");
+      CursoDbContext contexto = new CursoDbContext(optionsBuilder.Options);
+
+      var migracoesPendentes = contexto.Database.GetPendingMigrations();
+
+      if (migracoesPendentes.Count() > 0)
+      {
+        contexto.Database.Migrate();
+      }
+
+      var usuario = new Usuario();
+      usuario.Login = loginViewModelInput.Login;
+      usuario.Senha = loginViewModelInput.Senha;
+      usuario.Email = loginViewModelInput.Email;
+
+      contexto.Usuario.Add(usuario);
+      contexto.SaveChanges();
+
       return Created("", loginViewModelInput);
     }
   }
