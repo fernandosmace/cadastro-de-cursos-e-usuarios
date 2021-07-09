@@ -13,6 +13,7 @@ namespace curso.api.Infrastructure.Data.Mappings
       builder.Property(p => p.Codigo).ValueGeneratedOnAdd();
       builder.Property(p => p.Nome);
       builder.Property(p => p.Descricao);
+      builder.HasOne(p => p.Usuario).WithMany().HasForeignKey(fk => fk.CodigoUsuario);
     }
   }
 }
