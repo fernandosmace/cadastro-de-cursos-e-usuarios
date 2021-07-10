@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using curso.api.Business.Entities;
+using curso.api.Business.Repositories;
 using curso.api.Models;
 using curso.api.Models.Cursos;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +17,12 @@ namespace curso.api.Controllers
   [Authorize]
   public class CursoController : ControllerBase
   {
+    private readonly ICursoRepository _cursoRepository;
 
+    public CursoController(ICursoRepository cursoRepository)
+    {
+      _cursoRepository = cursoRepository;
+    }
 
     //   <sumary>
     //   Este serviço permite cadastrar curso para o usuário autenticado.
@@ -26,7 +34,15 @@ namespace curso.api.Controllers
     [Route("cadastro")]
     public async Task<IActionResult> Post(CursoViewModelInput cursoViewModelInput)
     {
-      //var codigoUsuario = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+      Curso curso = new Curso();
+      curso.Nome = cursoViewModelInput.Nome;
+      curso.Descricao = cursoViewModelInput.Descricao;
+
+      var codigoUsuario = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+      curso.CodigoUsuario = codigoUsuario;
+
+      _cursoRepository.Adicionar(curso);
+      _cursoRepository.Commit();
 
       return Created("", cursoViewModelInput);
     }
@@ -41,16 +57,16 @@ namespace curso.api.Controllers
     [Route("listarCursos")]
     public async Task<IActionResult> Get()
     {
-      var cursos = new List<CursoViewModelOutput>();
 
-      //var codigoUsuario = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+      var codigoUsuario = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
 
-      cursos.Add(new CursoViewModelOutput()
-      {
-        Login = "",
-        Descricao = "testeDescricao",
-        Nome = "testeNome"
-      });
+      var cursos = _cursoRepository.ObterPorUsuario(codigoUsuario)
+        .Select(s => new CursoViewModelOutput()
+        {
+          Nome = s.Nome,
+          Descricao = s.Descricao,
+          Login = s.Usuario.Login
+        });
 
       return Ok(cursos);
     }
