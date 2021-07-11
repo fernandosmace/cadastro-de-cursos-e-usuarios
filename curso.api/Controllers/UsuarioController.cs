@@ -80,15 +80,6 @@ namespace curso.api.Controllers
     [ValidacaoModelStateCustomizado]
     public IActionResult Registrar(RegistroViewModelInput loginViewModelInput)
     {
-
-
-      // var migracoesPendentes = contexto.Database.GetPendingMigrations();
-
-      // if (migracoesPendentes.Count() > 0)
-      // {
-      //   contexto.Database.Migrate();
-      // }
-
       var usuario = new Usuario();
       usuario.Login = loginViewModelInput.Login;
       usuario.Senha = loginViewModelInput.Senha;
