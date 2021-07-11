@@ -89,23 +89,9 @@ namespace curso.api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var _context = serviceScope.ServiceProvider.GetService <CursoDbContext> ();
-                _context.Database.Migrate();
-            }
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Curso");
-                c.RoutePrefix = string.Empty; //swagger
-            });
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
             }
 
             app.UseHttpsRedirection();
@@ -120,7 +106,14 @@ namespace curso.api
                 endpoints.MapControllers();
             });
 
-            
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Curso");
+                c.RoutePrefix = string.Empty; //swagger
+            });
+
+            app.UseApplyMigration();
         }
     }
 }
