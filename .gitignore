@@ -455,3 +455,7 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+curso.api/Properties/serviceDependencies.curso-dio-rest-api.json
+curso.api/Properties/serviceDependencies.json
+curso.api/Properties/ServiceDependencies/curso-dio-rest-api/mssql1.arm.json
+curso.api/Properties/ServiceDependencies/curso-dio-rest-api/profile.arm.json
