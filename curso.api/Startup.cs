@@ -111,6 +111,7 @@ namespace curso.api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Curso");
                 c.RoutePrefix = string.Empty; //swagger
+                c.DefaultModelsExpandDepth(-1);
             });
 
             app.UseApplyMigration();
