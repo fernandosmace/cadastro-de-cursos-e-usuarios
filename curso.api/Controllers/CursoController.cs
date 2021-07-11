@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,6 +11,9 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace curso.api.Controllers
 {
+  ///   <summary>
+  ///   Este serviço permite cadastrar curso para o usuário autenticado.
+  ///   </summary>
   [Route("api/v1/curso")]
   [ApiController]
   [Authorize]
@@ -24,10 +26,10 @@ namespace curso.api.Controllers
       _cursoRepository = cursoRepository;
     }
 
-    //   <sumary>
-    //   Este serviço permite cadastrar curso para o usuário autenticado.
-    //   </sumary>
-    //   <returns>Retorna status 201 e dados do curso do usuário.</returns>
+    ///   <summary>
+    ///   Este serviço permite cadastrar curso para o usuário autenticado.
+    ///   </summary>
+    ///   <returns>Retorna status 201 e dados do curso do usuário.</returns>
     [SwaggerResponse(statusCode: 201, description: "Curso cadastrado com sucesso!", Type = typeof(CursoViewModelInput))]
     [SwaggerResponse(statusCode: 401, description: "Não autorizado", Type = typeof(ValidaCampoViewModelOutput))]
     [HttpPost]
@@ -47,10 +49,10 @@ namespace curso.api.Controllers
       return Created("", cursoViewModelInput);
     }
 
-    //   <sumary>
-    //   Este serviço permite obter todos os cursos ativos do usuário.
-    //   </sumary>
-    //   <returns>Retorna status ok, dados do curso do usuário.</returns>
+    ///   <summary>
+    ///   Este serviço permite obter todos os cursos ativos do usuário.
+    ///   </summary>
+    ///   <returns>Retorna status ok, dados do curso do usuário.</returns>
     [SwaggerResponse(statusCode: 201, description: "Curso obtidos com sucesso!", Type = typeof(CursoViewModelInput))]
     [SwaggerResponse(statusCode: 401, description: "Não autorizado", Type = typeof(ValidaCampoViewModelOutput))]
     [HttpGet]
