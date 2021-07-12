@@ -25,8 +25,8 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration Release
       
-    - name: dotnet test
-      run: dotnet tests "${GITHUB_WORKSPACE}/tests/curso.api.tests/curso.api.tests.csproj"
+    - name: dotnet tests
+      run: dotnet test "${GITHUB_WORKSPACE}/tests/curso.api.tests/curso.api.tests.csproj"
       env:
           ConnectionStrings__DefaultConnection: ${{ secrets.DEFAULTSCONNECTION}}
 
