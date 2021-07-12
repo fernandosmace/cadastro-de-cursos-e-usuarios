@@ -8,6 +8,7 @@ namespace curso.api.Models.Usuarios
     public string Login { get; set; }
 
     [Required(ErrorMessage = "O email é obrigatório!")]
+    [EmailAddress(ErrorMessage = "E-mail inválido!")]
     public string Email { get; set; }
 
     [Required(ErrorMessage = "A senha é obrigatória!")]
