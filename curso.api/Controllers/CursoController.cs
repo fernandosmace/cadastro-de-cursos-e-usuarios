@@ -36,9 +36,11 @@ namespace curso.api.Controllers
     [Route("cadastro")]
     public async Task<IActionResult> Post(CursoViewModelInput cursoViewModelInput)
     {
-      Curso curso = new Curso();
-      curso.Nome = cursoViewModelInput.Nome;
-      curso.Descricao = cursoViewModelInput.Descricao;
+      Curso curso = new Curso()
+      {
+        Nome = cursoViewModelInput.Nome,
+        Descricao = cursoViewModelInput.Descricao
+      };
 
       var codigoUsuario = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
       curso.CodigoUsuario = codigoUsuario;
@@ -46,7 +48,11 @@ namespace curso.api.Controllers
       _cursoRepository.Adicionar(curso);
       _cursoRepository.Commit();
 
-      return Created("", cursoViewModelInput);
+      var cursoViewModelOutput = new CursoViewModelOutput();
+      cursoViewModelOutput.Nome = curso.Nome;
+      cursoViewModelOutput.Descricao = curso.Descricao;
+
+      return Created("", cursoViewModelOutput);
     }
 
     ///   <summary>
