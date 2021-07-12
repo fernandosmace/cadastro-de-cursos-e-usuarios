@@ -6,7 +6,6 @@ using curso.api.Models.Usuarios;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace curso.api.tests.Integrations.Controllers
 {
@@ -14,14 +13,12 @@ namespace curso.api.tests.Integrations.Controllers
   {
     private readonly WebApplicationFactory<Startup> _factory;
     private readonly HttpClient _httpClient;
-    private readonly ITestOutputHelper _output;
     protected RegistroViewModelInput RegistroViewModelInput;
 
-    public UsuarioControllerTests(WebApplicationFactory<Startup> factory, ITestOutputHelper output)
+    public UsuarioControllerTests(WebApplicationFactory<Startup> factory)
     {
       _factory = factory;
       _httpClient = _factory.CreateClient();
-      _output = output;
     }
 
     [Fact]
